@@ -1,0 +1,32 @@
+{
+  "name": "tokenportal",
+  "version": "1.0.0",
+  "description": "Token portals define a standard to move Ethereum native and ERC20 tokens between chains.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "@truffle/hdwallet-provider": "^1.2.1",
+    "dotenv": "^6.2.0",
+    "openzeppelin-solidity": "^1.12.0",
+    "truffle": "^5.1.59",
+    "truffle-flattener": "^1.5.0",
+    "web3": "^1.3.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "truffle build && node index",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0xMithril/BridgeableToken.git"
+  },
+  "author": "Jay Logelin (@lodge)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/0xMithril/BridgeableToken/issues"
+  },
+  "homepage": "https://github.com/0xMithril/BridgeableToken#readme"
+}
