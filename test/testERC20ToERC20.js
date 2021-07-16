@@ -120,6 +120,7 @@ contract('ERC20Portal To Bridgeable Token Tests [testERC20ToERC20.js]', async (a
             if (log.event == "EnterBridgeEvent") {
                 let result = log
                 let fromAccount = result.args.from
+               
                 // Step 2: Validators sign transactions from bridge middleware. They are responsible for verifying
                 // the home transaction tokens and originator account
                 let contentHash = hashFunction(fromAccount, result.transactionHash, home.address, tokensIn0xBTC)
@@ -132,6 +133,7 @@ contract('ERC20Portal To Bridgeable Token Tests [testERC20ToERC20.js]', async (a
                 let homeBalance = readable((await home.balanceOf(bridgeUser)))
                 let bitcoinBalance = readable((await bitcoin.balanceOf(bridgeUser)), 8)
                 await printState('After', home, foreign, bitcoin, bridgeUser)
+
                 assert.equal(STARTING_BALANCE, parseInt(homeBalance) + parseInt(bitcoinBalance))
 
                 break
