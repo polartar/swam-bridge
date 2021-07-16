@@ -6,7 +6,12 @@ contract NativePortal is BasePortal {
 	
     // @notice Logs the address of the sender and amounts paid to the contract
     event Paid(address indexed _from, uint _value);
-
+    
+    modifier containsTransactionOf(bytes32 _txnHash) {
+        require(containsTransaction(_txnHash) == false, 'Foreign transaction has already been processed');
+        _;
+    }
+    
     function () external payable {
         emit Paid(msg.sender, msg.value);
     }
@@ -16,8 +21,7 @@ contract NativePortal is BasePortal {
         emit EnterBridgeEvent(msg.sender, msg.value);
     }
     
-    function exit(bytes32 _txnHash, address _foreignContract, uint256 _amount, bytes _signatures) public {
-    	require(containsTransaction(_txnHash) == false, 'Foreign transaction has already been processed');
+    function exit(bytes32 _txnHash, address _foreignContract, uint256 _amount, bytes _signatures) public containsTransactionOf{
         require(_foreignContract == foreignContract, "Invalid contract target.");
         bytes32 hash = toEthBytes32SignedMessageHash(entranceHash(_txnHash,_foreignContract, _amount));
         address[] memory recovered = recoverAddresses(hash, _signatures);
