@@ -584,7 +584,7 @@ contract HomeToken is Bridgeable {
     string public name = "ExampleToken"; 
     string public symbol = "FIX";
     uint public decimals = 18;
-    uint public INITIAL_SUPPLY = 10000 * (10 ** decimals);
+    uint private INITIAL_SUPPLY = 10000 * (10 ** decimals);
 
     constructor() public {
         totalSupply_ = INITIAL_SUPPLY / 2;
