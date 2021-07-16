@@ -11,8 +11,8 @@ module.exports = function(deployer, network, accounts) {
         console.log('network: ' + network)
 
         await deployer.deploy(HomeToken)
-        //await deployer.deploy(ForeignToken)
-        //await deployer.deploy(NativePortal)
+        await deployer.deploy(ForeignToken)
+        await deployer.deploy(NativePortal)
         await deployer.deploy(Bitcoin)
         await deployer.deploy(ERC20Portal, Bitcoin.address)
 
