@@ -22,8 +22,6 @@ app.use(express.static('web'))
 var erc20Portal, bridgeableToken, erc20
 
 app.listen(process.env.PORT, async () => {
-    console.log('Welcome to Token Bridge 0.1 alpha')
-    console.log('Running on http://127.0.0.1:' + process.env.PORT)
     homeWeb3.setProvider(process.env.HOME_ETHEREUM_PROVIDER_URL)
     foreignWeb3.setProvider(process.env.FOREIGN_ETHEREUM_PROVIDER_URL)
     erc20Portal = new foreignWeb3.eth.Contract(erc20PortalJson.abi, process.env.FOREIGN_PORTAL_CONTRACT)
@@ -101,9 +99,6 @@ app.post('/foreign/verify', asyncMiddleware(async (request, response, next) => {
     let baseTokenAmount = tokens / Math.pow(10, decimals)
     let nativeTokenAmount = baseTokenAmount * Math.pow(10, 18)
 
-    console.log(decimals, baseTokenAmount, nativeTokenAmount)
-    console.log(fromAccount, txnHash, process.env.TOKEN_CONTRACT, tokens)
-
     let contentHash = hashFunction(fromAccount, txnHash, process.env.TOKEN_CONTRACT, nativeTokenAmount)
     let signatures = getValidatorSignature(contentHash)
 
@@ -119,14 +114,10 @@ app.post('/foreign/verify', asyncMiddleware(async (request, response, next) => {
 // curl -d '{ "txnHash": "0x83445ad0c995c35eb379218519508363ca60b28c883278b6202a57af723b1752" }' -H "Content-Type: application/json" http://127.0.0.1:4000/home/verify
 app.post('/home/verify', asyncMiddleware(async (request, response, next) => {
 
-    console.log(bridgeableToken)
-
     let logs = await bridgeableToken.getPastEvents('EnterBridgeEvent', {
         fromBlock: 0,
         toBlock: 'latest'
     })
-
-    console.log(logs)
 
     let log = logs.find(log => log.transactionHash === request.body.txnHash)
     if (!log) {
@@ -139,9 +130,6 @@ app.post('/home/verify', asyncMiddleware(async (request, response, next) => {
     let decimals = await erc20.methods.decimals().call()
     let baseTokenAmount = tokens / Math.pow(10, 18)
     let erc20TokenAmount = baseTokenAmount * Math.pow(10, decimals)
-
-    console.log(decimals, baseTokenAmount, erc20TokenAmount)
-    console.log(fromAccount, txnHash, process.env.HOME_BRIDGEABLE_CONTRACT, tokens)
 
     let contentHash = hashFunction(fromAccount, txnHash, process.env.HOME_BRIDGEABLE_CONTRACT, erc20TokenAmount)
     let signatures = getValidatorSignature(contentHash)
